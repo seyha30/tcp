@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="tcp">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/aaa.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bbb.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
