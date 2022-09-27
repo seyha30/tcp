@@ -43,6 +43,13 @@ public class TCPFileServer {
 					inFile.close();
 					System.out.println("Sending completed!");
 				}
+				
+			   if(in.readLine().equals("upload")) {
+				   System.out.println("todo server side get upload");
+				   
+			   }
+				
+				
 			}
 			
 		}catch(IOException ioe){

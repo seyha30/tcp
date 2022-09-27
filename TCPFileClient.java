@@ -61,7 +61,19 @@ public class TCPFileClient {
 				}
 				break;
 			case "put":
-				System.out.println("todo upload");
+				String fileNameUpload = args[1];
+				byte[] contents = new byte[10000];
+				//Initialize the FileOutputStream to the output file's full path.
+				FileOutputStream fos = new FileOutputStream(fileNameUpload);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				InputStream is = socket.getInputStream();
+				//No of bytes read in one read() call
+				int bytesRead = 0;
+				while((bytesRead=is.read(contents))!=-1)
+				bos.write(contents, 0, bytesRead);
+				bos.flush();
+				socket.close();
+		
 
 				break;
 			case "quit":
