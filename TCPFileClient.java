@@ -7,16 +7,12 @@ public class TCPFileClient {
 		if (!checkArgs(args)) {
 			return;
 		}
-
-		String ip = "localhost";
 		String command = args[0].toLowerCase();
-		Socket socket = null;
 		PrintWriter out = null;
-		final int PORT = 9999;
 		BufferedReader in = null;
+		Socket socket = new Socket("localhost", 9999);
 		switch (command) {
 		case "get":
-			socket = new Socket(ip, PORT);
 			String filename = args[1];
 			System.out.println("todo get");
 			try {
@@ -60,18 +56,29 @@ public class TCPFileClient {
 			break;
 		case "put":
 			String fileNameUpload = args[1];
-			byte[] contents = new byte[10000];
-			// Initialize the FileOutputStream to the output file's full path.
-			FileOutputStream fos = new FileOutputStream(fileNameUpload);
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			InputStream is = socket.getInputStream();
-			// No of bytes read in one read() call
-			int bytesRead = 0;
-			while ((bytesRead = is.read(contents)) != -1)
-				bos.write(contents, 0, bytesRead);
-			bos.flush();
-			socket.close();
-
+//			byte[] contents = new byte[10000];
+//			// Initialize the FileOutputStream to the output file's full path.
+//			FileOutputStream fos = new FileOutputStream(fileNameUpload);
+//			BufferedOutputStream bos = new BufferedOutputStream(fos);
+//			InputStream is = socket.getInputStream();
+//			// No of bytes read in one read() call
+//			int bytesRead = 0;
+//			while ((bytesRead = is.read(contents)) != -1)
+//				bos.write(contents, 0, bytesRead);
+//			bos.flush();
+//			socket.close();
+			out = new PrintWriter(socket.getOutputStream(), true);
+			out.println("put");
+			OutputStream outSocket = socket.getOutputStream();
+			FileInputStream inFile = new FileInputStream(fileNameUpload);
+			byte[] buf = new byte[1024];
+			int b; long l = 0;
+			while((b=inFile.read(buf, 0, 1024)) != -1){
+				l += b;
+				outSocket.write(buf, 0, b);
+			}
+			inFile.close();
+			System.out.println("Sending completed!");
 			break;
 		case "quit":
 			socket.close();
