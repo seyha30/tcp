@@ -19,35 +19,6 @@ public class TCPFileServer {
 				System.out.println("Got connection from " + socket.getInetAddress());
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				out = new PrintWriter(socket.getOutputStream(), true);
-
- 		if (in.readLine().equals("put")) {
- 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
- 			
-//					System.out.println("put");
-//					BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//					String filename = bufferedReader.readLine();
-//					File file = new File(filename);
-//					long filesize = file.length();
-//					FileOutputStream outFile = new FileOutputStream(
-//							"put" + System.currentTimeMillis() + "_" + filename);
-//					try {
-//						InputStream inSocket = socket.getInputStream();
-//						int b;
-//						long l = 0;
-//						byte[] buf = new byte[1024];
-//						while ((b = inSocket.read(buf, 0, 1024)) != -1) {
-//							l += b;
-//							outFile.write(buf, 0, b);
-//							if (l == filesize)
-//								break;
-//						}
-//						System.out.println("Receiving from client completed!");
-//					} catch (SocketTimeoutException ste) {
-//						System.out.println("[Error] Receiving timeout!!!!");
-//					} finally {
-//						outFile.close();
-//					}
-			}
 				String filename = in.readLine();
 				File file = new File(filename);
 				long filesize = file.length();

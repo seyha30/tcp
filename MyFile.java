@@ -1,6 +1,7 @@
 import java.io.File;
+import java.io.Serializable;
 
-public class MyFile {
+public class MyFile implements Serializable {
 	private String command;
 	private File file;
 
