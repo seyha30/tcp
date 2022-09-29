@@ -3,6 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 
 /*
  * @author seyha.sin
@@ -24,12 +25,13 @@ public class Server {
 				ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 				try {
 					myFile = (MyFile) objectInputStream.readObject();
-					System.out.println("Command = " + myFile.getCommand() + " contentFile = " + myFile.getFile());
 					if (myFile.getCommand().equalsIgnoreCase("put")) {
+						byte[] content = (byte[]) myFile.getContentFiles();
+						Files.write(myFile.getFile().toPath(), content);
 						System.out.println("todo read file" + myFile.getFile().getPath());
-
 					} else if (myFile.getCommand().equalsIgnoreCase("get")) {
-						System.out.println("todo send file");
+						String fileName = myFile.getFileName();
+						System.out.println("Please read file name and send === > " + fileName);
 
 					} else {
 						System.out.println("todo send file");
@@ -39,6 +41,8 @@ public class Server {
 				}
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
