@@ -16,6 +16,7 @@ public class Client {
 			MyFile myFile = new MyFile();
 			myFile.setCommand("put");
 			myFile.setFile(file);
+			myFile.setFileOutputStream(new FileOutputStream(file));
 			// for send
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 			// for receive
