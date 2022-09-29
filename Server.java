@@ -1,6 +1,9 @@
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.HttpCookie;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -21,20 +24,40 @@ public class Server {
 				System.out.println("Accepted from " + socket.getInetAddress());
 //				send object out put stream
 				ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-//				receive object 
+//				receive object input stream
 				ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 				try {
 					myFile = (MyFile) objectInputStream.readObject();
 					if (myFile.getCommand().equalsIgnoreCase("put")) {
 						byte[] content = (byte[]) myFile.getContentFiles();
-						Files.write(myFile.getFile().toPath(), content);
-						System.out.println("todo read file" + myFile.getFile().getPath());
+						FileOutputStream fileOutputStream = new FileOutputStream(
+								"put" + System.currentTimeMillis() + "." + myFile.getExtension());
+						fileOutputStream.write(content);
+						System.out.println("put file");
 					} else if (myFile.getCommand().equalsIgnoreCase("get")) {
 						String fileName = myFile.getFileName();
-						System.out.println("Please read file name and send === > " + fileName);
+						System.out.println("file name" + fileName);
+						File file = new File(fileName);
+						if (!file.exists()) {
+							System.out.println("File does not exists on server");
+							MyFile nFile = new MyFile();
+							nFile.setStatus("File does not exists on server");
+							objectOutputStream.writeObject(nFile);
+							objectOutputStream.flush();
+							continue;
+						}else {
+						myFile = new MyFile();
+						myFile.setFile(file);
+						myFile.setStatus("ok");
+						myFile.setExtension(fileName.substring(fileName.lastIndexOf(".") + 1));
+						myFile.setContentFiles(Files.readAllBytes(file.toPath()));
+						objectOutputStream.writeObject(myFile);
+						objectOutputStream.flush();
+						System.out.println("Please read file name and send back client === > " + fileName);
+						}
 
 					} else {
-						System.out.println("todo send file");
+						System.out.println("quit");
 					}
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
