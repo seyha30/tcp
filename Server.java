@@ -19,12 +19,21 @@ public class Server {
 				socket = serverSocket.accept();
 				System.out.println("Accepted from " + socket.getInetAddress());
 //				send object out put stream
-				//ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 //				receive object 
 				ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
 				try {
 					myFile = (MyFile) objectInputStream.readObject();
 					System.out.println("Command = " + myFile.getCommand() + " contentFile = " + myFile.getFile());
+					if (myFile.getCommand().equalsIgnoreCase("put")) {
+						System.out.println("todo read file" + myFile.getFile().getPath());
+
+					} else if (myFile.getCommand().equalsIgnoreCase("get")) {
+						System.out.println("todo send file");
+
+					} else {
+						System.out.println("todo send file");
+					}
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
